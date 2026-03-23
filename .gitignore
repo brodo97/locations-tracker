@@ -23,6 +23,9 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
+# Ignore backend configuration files as they are likely to contain sensitive data, such as s3 bucket names
+backend.tf
+
 # Ignore transient lock info files created by terraform apply
 .terraform.tfstate.lock.info
 
@@ -35,3 +38,5 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+*.zip
