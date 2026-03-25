@@ -37,15 +37,20 @@ variable "core_state_config" {
 }
 
 variable "athena_database_name" {
-  description = "Athena database name for location analytics."
+  description = "Athena database name for location analytics. If null, defaults to a sanitized <project>_<environment>_db."
   type        = string
-  default     = "locations"
+  default     = null
+
+  validation {
+    condition     = var.athena_database_name == null || can(regex("^[a-z0-9_]+$", var.athena_database_name))
+    error_message = "athena_database_name must contain only lowercase letters, numbers, and underscore (_)."
+  }
 }
 
 variable "athena_table_name" {
   description = "Athena external table name for location records."
   type        = string
-  default     = "locations_jsonl"
+  default     = "locations"
 }
 
 variable "athena_workgroup_name" {

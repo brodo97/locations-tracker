@@ -1,5 +1,5 @@
 resource "aws_athena_database" "locations" {
-  name   = var.athena_database_name
+  name   = local.athena_database_name
   bucket = local.data_lake_bucket
 
   force_destroy = false
@@ -27,13 +27,14 @@ resource "aws_glue_catalog_table" "locations" {
 
   parameters = {
     # Partition projection avoids catalog partition management (no MSCK REPAIR).
-    "EXTERNAL"                  = "TRUE"
-    "classification"            = "json"
-    "projection.enabled"        = "true"
-    "projection.year.type"      = "integer"
-    "projection.year.range"     = "${var.projection_year_start},${var.projection_year_end}"
-    "projection.month.type"     = "integer"
-    "projection.month.range"    = "1,12"
+    "EXTERNAL"               = "TRUE"
+    "classification"         = "json"
+    "projection.enabled"     = "true"
+    "projection.year.type"   = "integer"
+    "projection.year.range"  = "${var.projection_year_start},${var.projection_year_end}"
+    "projection.month.type"  = "integer"
+    "projection.month.range" = "1,12"
+    # Month/day folders are zero-padded in S3 (month=03/day=09).
     "projection.month.digits"   = "2"
     "projection.day.type"       = "integer"
     "projection.day.range"      = "1,31"
@@ -43,27 +44,37 @@ resource "aws_glue_catalog_table" "locations" {
 
   partition_keys {
     name = "year"
-    type = "int"
+    type = "string"
   }
 
   partition_keys {
     name = "month"
-    type = "int"
+    type = "string"
   }
 
   partition_keys {
     name = "day"
-    type = "int"
+    type = "string"
   }
 
   storage_descriptor {
     location      = local.table_root_location
     input_format  = "org.apache.hadoop.mapred.TextInputFormat"
-    output_format = "org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
 
     ser_de_info {
       name                  = "json"
       serialization_library = "org.openx.data.jsonserde.JsonSerDe"
+    }
+
+    columns {
+      name = "_type"
+      type = "string"
+    }
+
+    columns {
+      name = "_id"
+      type = "string"
     }
 
     columns {
@@ -82,6 +93,21 @@ resource "aws_glue_catalog_table" "locations" {
     }
 
     columns {
+      name = "created_at"
+      type = "bigint"
+    }
+
+    columns {
+      name = "acc"
+      type = "double"
+    }
+
+    columns {
+      name = "alt"
+      type = "double"
+    }
+
+    columns {
       name = "batt"
       type = "int"
     }
@@ -89,6 +115,61 @@ resource "aws_glue_catalog_table" "locations" {
     columns {
       name = "vel"
       type = "double"
+    }
+
+    columns {
+      name = "cog"
+      type = "double"
+    }
+
+    columns {
+      name = "conn"
+      type = "string"
+    }
+
+    columns {
+      name = "bs"
+      type = "int"
+    }
+
+    columns {
+      name = "m"
+      type = "int"
+    }
+
+    columns {
+      name = "source"
+      type = "string"
+    }
+
+    columns {
+      name = "tid"
+      type = "string"
+    }
+
+    columns {
+      name = "topic"
+      type = "string"
+    }
+
+    columns {
+      name = "vac"
+      type = "int"
+    }
+
+    columns {
+      name = "SSID"
+      type = "string"
+    }
+
+    columns {
+      name = "BSSID"
+      type = "string"
+    }
+
+    columns {
+      name = "t"
+      type = "string"
     }
   }
 }
