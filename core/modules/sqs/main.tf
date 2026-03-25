@@ -1,4 +1,4 @@
-﻿variable "queue_name" {
+variable "queue_name" {
   description = "SQS queue name."
   type        = string
 }
