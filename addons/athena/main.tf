@@ -6,6 +6,10 @@ data "terraform_remote_state" "core" {
 locals {
   name_prefix = "${var.project_name}-${var.environment}"
 
+  # Athena database names allow only lowercase letters, numbers, and underscores.
+  athena_name_prefix   = replace(replace(replace(replace(lower("${var.project_name}_${var.environment}"), "-", "_"), ".", "_"), " ", "_"), "/", "_")
+  athena_database_name = var.athena_database_name != null ? var.athena_database_name : "${local.athena_name_prefix}_db"
+
   data_lake_bucket = data.terraform_remote_state.core.outputs.data_lake_bucket
   data_lake_prefix = trim(data.terraform_remote_state.core.outputs.data_lake_prefix, "/")
 
