@@ -101,20 +101,152 @@ resource "aws_api_gateway_model" "location_payload" {
   content_type = "application/json"
   schema = jsonencode({
     "$schema" = "http://json-schema.org/draft-04/schema#"
-    title     = "OwnTracks location payload"
+    title     = "OwnTracks payload"
     type      = "object"
-    required  = ["_type", "lat", "lon", "tst"]
     properties = {
-      "_type" = { type = "string" }
-      "_id"   = { type = "string" }
-      "lat"   = { type = "number", minimum = -90, maximum = 90 }
-      "lon"   = { type = "number", minimum = -180, maximum = 180 }
-      "tst"   = { type = "integer" }
-      "batt"  = { type = "integer", minimum = 0, maximum = 100 }
-      "vel"   = { type = "number", minimum = 0 }
-      "cog"   = { type = "number", minimum = 0, maximum = 360 }
-      "conn"  = { type = "string", enum = ["m", "w"] }
+      "_type" = {
+        type = "string"
+        enum = [
+          "beacon",
+          "card",
+          "cmd",
+          "configuration",
+          "encrypted",
+          "location",
+          "lwt",
+          "request",
+          "status",
+          "steps",
+          "transition",
+          "waypoint",
+          "waypoints"
+        ]
+      }
+      "lat"       = { type = "number", minimum = -90, maximum = 90 }
+      "lon"       = { type = "number", minimum = -180, maximum = 180 }
+      "tst"       = { type = "integer" }
+      "wtst"      = { type = "integer" }
+      "event"     = { type = "string" }
+      "desc"      = { type = "string" }
+      "waypoints" = { type = "array" }
+      "action"    = { type = "string" }
+      "data"      = { type = "string" }
+      "tid"       = { type = "string" }
+      "request"   = {}
+      "steps"     = {}
+      "_id"       = { type = "string" }
+      "batt"      = { type = "integer", minimum = 0, maximum = 100 }
+      "vel"       = { type = "number", minimum = 0 }
+      "cog"       = { type = "number", minimum = 0, maximum = 360 }
+      "conn"      = { type = "string" }
     }
+    required = ["_type"]
+    oneOf = [
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["location"] }
+        }
+        required             = ["_type", "lat", "lon", "tst"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["transition"] }
+        }
+        required             = ["_type", "tst", "wtst", "event"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["waypoint"] }
+        }
+        required             = ["_type", "desc", "tst"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["waypoints"] }
+        }
+        required             = ["_type", "waypoints"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["cmd"] }
+        }
+        required             = ["_type", "action"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["encrypted"] }
+        }
+        required             = ["_type", "data"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["card"] }
+        }
+        required             = ["_type", "tid"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["lwt"] }
+        }
+        required             = ["_type", "tst"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["steps"] }
+        }
+        required             = ["_type", "tst", "steps"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["request"] }
+        }
+        required             = ["_type", "request"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["status"] }
+        }
+        required             = ["_type"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["configuration"] }
+        }
+        required             = ["_type"]
+        additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["beacon"] }
+        }
+        required             = ["_type", "tst"]
+        additionalProperties = true
+      }
+    ]
     additionalProperties = true
   })
 }
