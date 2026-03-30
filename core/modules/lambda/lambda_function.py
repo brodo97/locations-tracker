@@ -71,7 +71,7 @@ def handler(event, context):
     for record in event["Records"]:
         body = json.loads(record["body"])
 
-        record_type = body.get("type")
+        record_type = body.get("_type")
         if record_type not in SUPPORTED_TYPES:
             print(f"Skipping record with type {record_type}")
             continue
