@@ -18,7 +18,7 @@ def handler(event, context):
         body = json.loads(record["body"])
 
         if body.get("_type") != "location":
-            print(f"Skipping record with type {body.get('type')}")
+            print(f"Skipping record with type {body.get('_type')}")
             continue
 
         ts = body.get("tst", int(time.time()))
