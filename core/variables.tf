@@ -9,6 +9,12 @@ variable "project_name" {
   type        = string
 }
 
+variable "activity_project_name" {
+  description = "Project identifier used for naming the activities data bucket."
+  type        = string
+  default     = "activities-tracker"
+}
+
 variable "environment" {
   description = "Deployment environment (e.g., dev, prod)."
   type        = string
@@ -83,4 +89,9 @@ variable "s3_lifecycle_days" {
   description = "Optional lifecycle rule to expire objects after N days. Set to 0 to disable."
   type        = number
   default     = 0
+}
+
+variable "api_gateway_enable_logging" {
+  description = "Enable API Gateway access and execution logging."
+  type        = bool
 }

@@ -9,7 +9,12 @@ variable "role_name" {
 }
 
 variable "bucket_name" {
-  description = "Target S3 bucket name."
+  description = "Target S3 bucket name for location data."
+  type        = string
+}
+
+variable "activity_bucket_name" {
+  description = "Target S3 bucket name for activity data."
   type        = string
 }
 
@@ -113,7 +118,9 @@ data "aws_iam_policy_document" "lambda_policy" {
     ]
     resources = [
       "arn:aws:s3:::${var.bucket_name}",
-      "arn:aws:s3:::${var.bucket_name}/*"
+      "arn:aws:s3:::${var.bucket_name}/*",
+      "arn:aws:s3:::${var.activity_bucket_name}",
+      "arn:aws:s3:::${var.activity_bucket_name}/*"
     ]
   }
 }
@@ -146,7 +153,8 @@ resource "aws_lambda_function" "this" {
 
   environment {
     variables = {
-      BUCKET_NAME = var.bucket_name
+      LOCATION_BUCKET = var.bucket_name
+      ACTIVITY_BUCKET = var.activity_bucket_name
     }
   }
 

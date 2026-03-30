@@ -9,6 +9,14 @@ module "s3" {
   tags           = local.all_tags
 }
 
+module "s3_activity" {
+  source = "./modules/s3"
+
+  bucket_name    = local.activity_bucket_name
+  lifecycle_days = var.s3_lifecycle_days
+  tags           = local.all_tags
+}
+
 module "sqs" {
   source = "./modules/sqs"
 
@@ -25,6 +33,7 @@ module "lambda" {
   function_name                    = local.lambda_name
   role_name                        = local.lambda_role
   bucket_name                      = module.s3.bucket_name
+  activity_bucket_name             = module.s3_activity.bucket_name
   queue_arn                        = module.sqs.queue_arn
   queue_url                        = module.sqs.queue_url
   memory_size                      = var.lambda_memory_size
@@ -43,5 +52,6 @@ module "api_gateway" {
   api_role_name = local.api_role
   queue_arn     = module.sqs.queue_arn
   queue_url     = module.sqs.queue_url
+  enable_logging = var.api_gateway_enable_logging
   tags          = local.all_tags
 }

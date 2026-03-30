@@ -4,6 +4,8 @@ locals {
 
   # Core resource names
   s3_bucket_name = "${local.name_prefix}-${var.aws_region}"
+  activity_name_prefix = "${var.activity_project_name}-${var.environment}"
+  activity_bucket_name = "${local.activity_name_prefix}-${var.aws_region}"
   sqs_queue_name = "${local.name_prefix}-queue"
   lambda_name    = "${local.name_prefix}-processor"
   lambda_role    = "${local.name_prefix}-lambda-role"
