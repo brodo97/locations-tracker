@@ -17,6 +17,10 @@ def handler(event, context):
     for record in event["Records"]:
         body = json.loads(record["body"])
 
+        if body.get("type") != "location":
+            print(f"Skipping record with type {body.get('type')}")
+            continue
+
         ts = body.get("tst", int(time.time()))
         dt = datetime.fromtimestamp(ts, tz=timezone.utc)
 
