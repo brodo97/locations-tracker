@@ -24,6 +24,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "enable_logging" {
+  description = "Enable API Gateway access logs and execution logging."
+  type        = bool
+  default     = false
+}
+
 locals {
   # API path for ingesting location payloads
   resource_path         = "locations"
@@ -97,7 +103,7 @@ resource "aws_api_gateway_rest_api" "this" {
 
 resource "aws_api_gateway_model" "location_payload" {
   rest_api_id  = aws_api_gateway_rest_api.this.id
-  name         = "LocationPayload"
+  name         = "OwnTracksPayload"
   content_type = "application/json"
   schema = jsonencode({
     "$schema" = "http://json-schema.org/draft-04/schema#"
@@ -119,12 +125,14 @@ resource "aws_api_gateway_model" "location_payload" {
           "steps",
           "transition",
           "waypoint",
-          "waypoints"
+          "waypoints",
+          "activity"
         ]
       }
       "lat"       = { type = "number", minimum = -90, maximum = 90 }
       "lon"       = { type = "number", minimum = -180, maximum = 180 }
       "tst"       = { type = "integer" }
+      "act"       = { type = "integer" }
       "wtst"      = { type = "integer" }
       "event"     = { type = "string" }
       "desc"      = { type = "string" }
@@ -245,6 +253,13 @@ resource "aws_api_gateway_model" "location_payload" {
         }
         required             = ["_type", "tst"]
         additionalProperties = true
+      },
+      {
+        type = "object"
+        properties = {
+          "_type" = { enum = ["activity"] }
+        }
+        additionalProperties = true
       }
     ]
     additionalProperties = true
@@ -342,12 +357,78 @@ resource "aws_api_gateway_deployment" "this" {
   ]
 }
 
+resource "aws_cloudwatch_log_group" "apigw_access" {
+  count = var.enable_logging ? 1 : 0
+
+  name              = "/aws/apigateway/${var.api_name}"
+  retention_in_days = 30
+  tags              = var.tags
+}
+
+resource "aws_iam_role" "apigw_logs" {
+  count = var.enable_logging ? 1 : 0
+
+  name               = "${var.api_name}-logs-role"
+  assume_role_policy = data.aws_iam_policy_document.apigw_assume.json
+  tags               = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "apigw_logs" {
+  count = var.enable_logging ? 1 : 0
+
+  role       = aws_iam_role.apigw_logs[0].name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+}
+
+resource "aws_api_gateway_account" "this" {
+  count = var.enable_logging ? 1 : 0
+
+  cloudwatch_role_arn = aws_iam_role.apigw_logs[0].arn
+}
+
 resource "aws_api_gateway_stage" "this" {
   stage_name    = "v1"
   rest_api_id   = aws_api_gateway_rest_api.this.id
   deployment_id = aws_api_gateway_deployment.this.id
 
+  dynamic "access_log_settings" {
+    for_each = var.enable_logging ? [1] : []
+    content {
+      destination_arn = aws_cloudwatch_log_group.apigw_access[0].arn
+      format = jsonencode({
+        requestId      = "$context.requestId"
+        ip             = "$context.identity.sourceIp"
+        caller         = "$context.identity.caller"
+        user           = "$context.identity.user"
+        requestTime    = "$context.requestTime"
+        httpMethod     = "$context.httpMethod"
+        resourcePath   = "$context.resourcePath"
+        status         = "$context.status"
+        protocol       = "$context.protocol"
+        responseLength = "$context.responseLength"
+        integrationId  = "$context.integration.requestId"
+      })
+    }
+  }
+
   tags = var.tags
+  depends_on = [aws_api_gateway_account.this]
+}
+
+resource "aws_api_gateway_method_settings" "logging" {
+  count = var.enable_logging ? 1 : 0
+
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  stage_name  = aws_api_gateway_stage.this.stage_name
+  method_path = "*/*"
+
+  settings {
+    logging_level      = "INFO"
+    data_trace_enabled = true
+    metrics_enabled    = true
+  }
+
+  depends_on = [aws_api_gateway_account.this]
 }
 
 data "aws_region" "current" {}
