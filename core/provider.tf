@@ -20,3 +20,12 @@ provider "aws" {
     tags = local.all_tags
   }
 }
+
+provider "aws" {
+  alias  = "iot"
+  region = local.iot_effective_region
+
+  default_tags {
+    tags = local.all_tags
+  }
+}

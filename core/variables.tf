@@ -9,6 +9,12 @@ variable "project_name" {
   type        = string
 }
 
+variable "activity_project_name" {
+  description = "Project identifier used for naming the activities data bucket."
+  type        = string
+  default     = "activities-tracker"
+}
+
 variable "environment" {
   description = "Deployment environment (e.g., dev, prod)."
   type        = string
@@ -83,4 +89,45 @@ variable "s3_lifecycle_days" {
   description = "Optional lifecycle rule to expire objects after N days. Set to 0 to disable."
   type        = number
   default     = 0
+}
+
+variable "api_gateway_enable_logging" {
+  description = "Enable API Gateway access and execution logging."
+  type        = bool
+}
+
+variable "enable_api_gateway" {
+  description = "Enable HTTP ingestion through API Gateway."
+  type        = bool
+  default     = true
+}
+
+variable "enable_iot_core" {
+  description = "Enable MQTT ingestion through AWS IoT Core."
+  type        = bool
+  default     = false
+}
+
+variable "iot_core_region" {
+  description = "AWS region used for IoT Core resources. If null, defaults to aws_region."
+  type        = string
+  default     = null
+}
+
+variable "iot_create_certificate" {
+  description = "Create an IoT X.509 certificate and attach the generated policy."
+  type        = bool
+  default     = false
+}
+
+variable "iot_topic_filter" {
+  description = "MQTT topic filter used by IoT Core topic rule and client policy."
+  type        = string
+  default     = "owntracks/#"
+}
+
+variable "iot_core_unsupported_regions" {
+  description = "Regions known to be unsupported for IoT Core in this project context."
+  type        = set(string)
+  default     = ["eu-south-1"]
 }
