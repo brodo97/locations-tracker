@@ -1,98 +1,181 @@
 # Location Tracker
 
-This repository provisions a modular AWS geolocation platform based on Terraform.
+Terraform repository to collect geolocation data and make it queryable with Athena on AWS.
 
-The ingestion pipeline remains unchanged and now lives in an isolated **core** stack:
+## Overview
+
+The platform is organized into independent stacks:
+
+- `core`: data ingestion pipeline.
+- `addons/athena`: analytics layer on top of the core data lake.
+
+Main data flow:
 
 ```text
-API Gateway -> SQS -> Lambda -> S3 (JSONL by day)
+Client HTTP -> API Gateway -> SQS -> Lambda -> S3 (JSONL partizionato per data)
 ```
 
-Addons are deployed independently and consume core outputs via `terraform_remote_state`.
+## How It Works
 
-## Repository Layout
+1. The client sends JSON payloads to the API Gateway endpoint `POST /locations`.
+2. API Gateway validates the request body and forwards the message to SQS.
+3. Lambda reads messages from SQS, keeps only events with `_type = "location"`, and writes them to S3.
+4. Files are stored in JSON Lines format using the following path pattern:
+
+```text
+year=YYYY/month=MM/day=DD/locations.jsonl
+```
+
+5. The Athena addon reads the core Terraform state, then creates a database/workgroup and an external Glue table on top of the S3 layout.
+
+## Repository Structure
 
 ```text
 .
 ├── core/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   ├── locals.tf
-│   ├── provider.tf
 │   ├── backend.tf
+│   ├── backend.tf.example
+│   ├── locals.tf
+│   ├── main.tf
+│   ├── outputs.tf
+│   ├── provider.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
 │   └── modules/
 │       ├── api_gateway/
 │       ├── lambda/
 │       ├── s3/
 │       └── sqs/
-├── addons/
-│   ├── athena/
-│   │   ├── athena.tf
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   │   ├── provider.tf
-│   │   └── backend.tf
-└── README.md
+└── addons/
+		└── athena/
+				├── athena.tf
+				├── backend.tf
+				├── backend.tf.example
+				├── main.tf
+				├── outputs.tf
+				├── provider.tf
+				├── terraform.tfvars
+				└── variables.tf
 ```
 
-## Core Stack (Unchanged Ingestion)
+## Prerequisiti
 
-The `core` stack keeps the original ingestion behavior intact.
+- Terraform >= 1.6.0
+- AWS credentials configured locally
+- IAM permissions to create API Gateway, SQS, Lambda, S3, Athena, Glue, and IAM resources
 
-### Core outputs for addons
+## Configuration
 
+### 1) Terraform Backend
+
+Each stack uses a separate Terraform state.
+
+- Copy `backend.tf.example` to `backend.tf` in each stack (`core` and `addons/athena`), or edit the existing backend files.
+- Set S3 backend bucket, key, and region values. (optional)
+
+### 2) Main Variables
+
+In `core/terraform.tfvars`:
+
+- `project_name`
+- `environment`
+
+In `addons/athena/terraform.tfvars`:
+
+- `project_name`
+- `environment`
+
+To connect Athena to core through remote state, verify in `addons/athena/variables.tf`:
+
+- `core_state_backend`
+- `core_state_config`
+
+## Deploy
+
+Run the stacks in this order.
+
+### Core
+
+```bash
+cd core
+terraform init
+terraform plan
+terraform apply
+```
+
+Output utile:
+
+Useful outputs:
+
+- `api_gateway_invoke_url`
 - `data_lake_bucket`
 - `data_lake_prefix`
 - `aws_region`
-- `api_gateway_invoke_url`
 
-## Addon: Athena
+### Addon Athena
 
-The `addons/athena` stack creates:
+```bash
+cd addons/athena
+terraform init
+terraform plan
+terraform apply
+```
 
-- Athena database
-- Glue external table backed by JSONL in core S3 data lake
-- Athena workgroup
+Output utile:
 
-### Athena table details
-
-- JSON SerDe: `org.openx.data.jsonserde.JsonSerDe`
-- Partitions: `year`, `month`, `day`
-- Partition projection enabled (no `MSCK REPAIR TABLE` required)
-
-Outputs:
+Useful outputs:
 
 - `athena_database_name`
 - `athena_table_name`
 - `athena_workgroup_name`
 
-## Deployment Model (Independent States)
+## Usage
 
-Each stack has its own `backend.tf` and can be deployed independently.
+### Sending Data to the API
 
-Run in this order:
+Use the `api_gateway_invoke_url` output with the `/locations` path.
+
+Example:
 
 ```bash
-cd core
-terraform init
-terraform apply
-
-cd ../addons/athena
-terraform init
-terraform apply
+curl -X POST "<api_gateway_invoke_url>/locations" \
+	-H "Content-Type: application/json" \
+	-d '{"_type":"location","lat":45.46,"lon":9.19,"tst":1774915200}'
 ```
 
-## Remote State Wiring
+The API response includes an acknowledgment containing the queue `message_id`.
 
-All addons read **core** values through `terraform_remote_state`.
+### Querying Data with Athena
 
-- `addons/athena` -> reads core state
+The table uses partition projection on `year`, `month`, and `day`, so queries should filter partitions to maximize performance.
 
-If your backend settings differ from defaults, override remote state variables:
+Example:
 
-- `core_state_backend`
-- `core_state_config`
-- `query_api_state_backend`
-- `query_api_state_config`
+```sql
+SELECT lat, lon, tst
+FROM locations
+WHERE year = '2026' AND month = '03' AND day = '25'
+ORDER BY tst DESC
+LIMIT 100;
+```
+
+## Created Resources
+
+### Core
+
+- API Gateway REST API with `POST /locations` endpoint
+- SQS queue
+- Python 3.13 Lambda function with SQS trigger
+- Versioned S3 bucket with server-side encryption (AES256)
+
+### Athena Addon
+
+- Athena database
+- Athena workgroup
+- External Glue Catalog table on partitioned JSONL data
+
+## Operational Notes
+
+- Lambda writes only events with `_type = "location"`.
+- Data lake files are appended to `locations.jsonl` for each UTC day.
+- Naming and tagging are driven by `project_name`, `environment`, and `additional_tags`.
