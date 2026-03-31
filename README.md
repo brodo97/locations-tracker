@@ -1,6 +1,13 @@
 # Location Tracker
 
-Terraform repository to collect geolocation data and make it queryable with Athena on AWS.
+**Terraform repository to ingest mobile geolocation telemetry on AWS and query it with Athena**
+
+This repository defines an AWS-based infrastructure for ingesting mobile geolocation telemetry and querying it using Amazon Athena.
+
+If you want to dynamically adjust OwnTracks’ recording mode based on device activity, check out my Automate flow:
+[https://llamalab.com/automate/community/flows/52485](https://llamalab.com/automate/community/flows/52485)
+
+To enable ingestion of activity data, use the `automate` branch of this repository.
 
 ## Overview
 
