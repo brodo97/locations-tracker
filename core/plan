@@ -1,0 +1,1320 @@
+module.lambda.data.archive_file.lambda_zip: Reading...
+module.lambda.data.archive_file.lambda_zip: Read complete after 0s [id=c26f4c85fb281a4047aa7989cac8a0e5c067e756]
+module.api_gateway[0].data.aws_iam_policy_document.apigw_assume: Reading...
+module.api_gateway[0].data.aws_region.current: Reading...
+module.api_gateway.aws_api_gateway_rest_api.this: Refreshing state... [id=pekpiisite]
+module.sqs.aws_sqs_queue.this: Refreshing state... [id=https://sqs.eu-south-1.amazonaws.com/681108148089/locations-tracker-prod-queue]
+module.api_gateway[0].data.aws_iam_policy_document.apigw_assume: Read complete after 0s [id=2699642182]
+module.lambda.data.aws_iam_policy_document.assume_role: Reading...
+module.api_gateway[0].data.aws_caller_identity.current: Reading...
+module.api_gateway[0].data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.s3_activity.aws_s3_bucket.this: Refreshing state... [id=activities-tracker-prod-eu-south-1]
+module.lambda.data.aws_iam_policy_document.assume_role: Read complete after 0s [id=2690255455]
+module.s3.aws_s3_bucket.this: Refreshing state... [id=locations-tracker-prod-eu-south-1]
+module.api_gateway.aws_iam_role.apigw: Refreshing state... [id=locations-tracker-prod-apigw-role]
+module.api_gateway[0].data.aws_caller_identity.current: Read complete after 0s [id=681108148089]
+module.lambda.aws_iam_role.this: Refreshing state... [id=locations-tracker-prod-lambda-role]
+module.api_gateway[0].data.aws_iam_policy_document.apigw_sqs: Reading...
+module.api_gateway[0].data.aws_iam_policy_document.apigw_sqs: Read complete after 0s [id=2610828604]
+module.api_gateway.aws_api_gateway_model.location_payload: Refreshing state... [id=wvb5l3]
+module.iot_core[0].data.aws_caller_identity.current: Reading...
+module.iot_core[0].data.aws_iam_policy_document.iot_assume_role: Reading...
+module.iot_core[0].data.aws_iot_endpoint.this: Reading...
+module.iot_core[0].data.aws_iam_policy_document.iot_to_sqs: Reading...
+module.iot_core[0].data.aws_region.current: Reading...
+module.api_gateway.aws_api_gateway_resource.locations: Refreshing state... [id=ikeozh]
+module.api_gateway.aws_api_gateway_request_validator.body_only: Refreshing state... [id=hz4j2s]
+module.iot_core[0].data.aws_iam_policy_document.iot_to_sqs: Read complete after 0s [id=2610828604]
+module.iot_core[0].data.aws_iam_policy_document.iot_assume_role: Read complete after 0s [id=234041169]
+module.iot_core[0].data.aws_region.current: Read complete after 0s [id=eu-south-1]
+module.s3_activity.aws_s3_bucket_versioning.this: Refreshing state... [id=activities-tracker-prod-eu-south-1]
+module.s3_activity.aws_s3_bucket_server_side_encryption_configuration.this: Refreshing state... [id=activities-tracker-prod-eu-south-1]
+module.s3_activity.aws_s3_bucket_lifecycle_configuration.this: Refreshing state... [id=activities-tracker-prod-eu-south-1]
+module.iot_core[0].data.aws_caller_identity.current: Read complete after 0s [id=681108148089]
+module.s3.aws_s3_bucket_versioning.this: Refreshing state... [id=locations-tracker-prod-eu-south-1]
+module.s3.aws_s3_bucket_server_side_encryption_configuration.this: Refreshing state... [id=locations-tracker-prod-eu-south-1]
+module.s3.aws_s3_bucket_lifecycle_configuration.this: Refreshing state... [id=locations-tracker-prod-eu-south-1]
+module.api_gateway.aws_api_gateway_method.post: Refreshing state... [id=agm-pekpiisite-ikeozh-POST]
+module.lambda.data.aws_iam_policy_document.lambda_policy: Reading...
+module.lambda.data.aws_iam_policy_document.lambda_policy: Read complete after 0s [id=1372049833]
+module.api_gateway.aws_api_gateway_method_response.post_200: Refreshing state... [id=agmr-pekpiisite-ikeozh-POST-200]
+module.lambda.aws_iam_role_policy_attachment.basic: Refreshing state... [id=locations-tracker-prod-lambda-role-20260323214511216200000001]
+module.lambda.aws_iam_role_policy.inline: Refreshing state... [id=locations-tracker-prod-lambda-role:locations-tracker-prod-processor-policy]
+module.lambda.aws_lambda_function.this: Refreshing state... [id=locations-tracker-prod-processor]
+module.api_gateway.aws_iam_role_policy.apigw_sqs: Refreshing state... [id=locations-tracker-prod-apigw-role:locations-tracker-prod-api-sqs-policy]
+module.api_gateway.aws_api_gateway_integration.sqs: Refreshing state... [id=agi-pekpiisite-ikeozh-POST]
+module.api_gateway.aws_api_gateway_integration_response.post_200: Refreshing state... [id=agir-pekpiisite-ikeozh-POST-200]
+module.api_gateway.aws_api_gateway_deployment.this: Refreshing state... [id=sf61w0]
+module.api_gateway.aws_api_gateway_stage.this: Refreshing state... [id=ags-pekpiisite-v1]
+module.lambda.aws_cloudwatch_log_group.lambda: Refreshing state... [id=/aws/lambda/locations-tracker-prod-processor]
+module.lambda.aws_lambda_event_source_mapping.sqs: Refreshing state... [id=e00549b8-9aaa-4acd-a200-57d4d8063748]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+  ~ update in-place
+  - destroy
+
+Terraform planned the following actions, but then encountered a problem:
+
+  # module.api_gateway.aws_api_gateway_deployment.this will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_deployment" "this" {
+      - created_date  = "2026-03-30T22:34:21Z" -> null
+      - execution_arn = "arn:aws:execute-api:eu-south-1:681108148089:pekpiisite/" -> null
+      - id            = "sf61w0" -> null
+      - invoke_url    = "https://pekpiisite.execute-api.eu-south-1.amazonaws.com/" -> null
+      - rest_api_id   = "pekpiisite" -> null
+      - triggers      = {
+          - "redeployment" = "9357aa9d650ae34b0289a5ce3e2fc7cba39555cf"
+        } -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.api_gateway.aws_api_gateway_integration.sqs will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_integration" "sqs" {
+      - cache_key_parameters    = [] -> null
+      - cache_namespace         = "ikeozh" -> null
+      - connection_type         = "INTERNET" -> null
+      - credentials             = "arn:aws:iam::681108148089:role/locations-tracker-prod-apigw-role" -> null
+      - http_method             = "POST" -> null
+      - id                      = "agi-pekpiisite-ikeozh-POST" -> null
+      - integration_http_method = "POST" -> null
+      - passthrough_behavior    = "WHEN_NO_MATCH" -> null
+      - request_parameters      = {
+          - "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
+        } -> null
+      - request_templates       = {
+          - "application/json" = "Action=SendMessage&Version=2012-11-05&MessageBody=$util.urlEncode($input.body)"
+        } -> null
+      - resource_id             = "ikeozh" -> null
+      - rest_api_id             = "pekpiisite" -> null
+      - timeout_milliseconds    = 29000 -> null
+      - type                    = "AWS" -> null
+      - uri                     = "arn:aws:apigateway:eu-south-1:sqs:path/681108148089/locations-tracker-prod-queue" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.api_gateway.aws_api_gateway_integration_response.post_200 will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_integration_response" "post_200" {
+      - http_method         = "POST" -> null
+      - id                  = "agir-pekpiisite-ikeozh-POST-200" -> null
+      - resource_id         = "ikeozh" -> null
+      - response_parameters = {} -> null
+      - response_templates  = {
+          - "application/json" = <<-EOT
+                #set($messageId = "")
+                #set($fromPath = $input.path('$.SendMessageResponse.SendMessageResult.MessageId'))
+                #if($fromPath != "" && $fromPath != "null")
+                  #set($messageId = $fromPath)
+                #else
+                  #set($raw = $input.body)
+                  #set($startTag = "<MessageId>")
+                  #set($endTag = "</MessageId>")
+                  #set($start = $raw.indexOf($startTag))
+                  #if($start != -1)
+                    #set($from = $start + $startTag.length())
+                    #set($end = $raw.indexOf($endTag, $from))
+                    #if($end != -1)
+                      #set($messageId = $raw.substring($from, $end))
+                    #end
+                  #end
+                #end
+                {
+                  "_type": "location_ack",
+                  "message_id": "$util.escapeJavaScript($messageId)"
+                }
+            EOT
+        } -> null
+      - rest_api_id         = "pekpiisite" -> null
+      - status_code         = "200" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.api_gateway.aws_api_gateway_method.post will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_method" "post" {
+      - api_key_required     = false -> null
+      - authorization        = "NONE" -> null
+      - authorization_scopes = [] -> null
+      - http_method          = "POST" -> null
+      - id                   = "agm-pekpiisite-ikeozh-POST" -> null
+      - request_models       = {
+          - "application/json" = "OwnTracksPayload"
+        } -> null
+      - request_parameters   = {} -> null
+      - request_validator_id = "hz4j2s" -> null
+      - resource_id          = "ikeozh" -> null
+      - rest_api_id          = "pekpiisite" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.api_gateway.aws_api_gateway_method_response.post_200 will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_method_response" "post_200" {
+      - http_method         = "POST" -> null
+      - id                  = "agmr-pekpiisite-ikeozh-POST-200" -> null
+      - resource_id         = "ikeozh" -> null
+      - response_models     = {} -> null
+      - response_parameters = {} -> null
+      - rest_api_id         = "pekpiisite" -> null
+      - status_code         = "200" -> null
+    }
+
+  # module.api_gateway.aws_api_gateway_model.location_payload will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_model" "location_payload" {
+      - content_type = "application/json" -> null
+      - id           = "wvb5l3" -> null
+      - name         = "OwnTracksPayload" -> null
+      - rest_api_id  = "pekpiisite" -> null
+      - schema       = jsonencode(
+            {
+              - "$schema"            = "http://json-schema.org/draft-04/schema#"
+              - additionalProperties = true
+              - oneOf                = [
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "location",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "lat",
+                          - "lon",
+                          - "tst",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "transition",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "tst",
+                          - "wtst",
+                          - "event",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "waypoint",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "desc",
+                          - "tst",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "waypoints",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "waypoints",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "cmd",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "action",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "encrypted",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "data",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "card",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "tid",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "lwt",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "tst",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "steps",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "tst",
+                          - "steps",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "request",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "request",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "status",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "configuration",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "beacon",
+                                ]
+                            }
+                        }
+                      - required             = [
+                          - "_type",
+                          - "tst",
+                        ]
+                      - type                 = "object"
+                    },
+                  - {
+                      - additionalProperties = true
+                      - properties           = {
+                          - _type = {
+                              - enum = [
+                                  - "activity",
+                                ]
+                            }
+                        }
+                      - type                 = "object"
+                    },
+                ]
+              - properties           = {
+                  - _id       = {
+                      - type = "string"
+                    }
+                  - _type     = {
+                      - enum = [
+                          - "beacon",
+                          - "card",
+                          - "cmd",
+                          - "configuration",
+                          - "encrypted",
+                          - "location",
+                          - "lwt",
+                          - "request",
+                          - "status",
+                          - "steps",
+                          - "transition",
+                          - "waypoint",
+                          - "waypoints",
+                          - "activity",
+                        ]
+                      - type = "string"
+                    }
+                  - act       = {
+                      - type = "integer"
+                    }
+                  - action    = {
+                      - type = "string"
+                    }
+                  - batt      = {
+                      - maximum = 100
+                      - minimum = 0
+                      - type    = "integer"
+                    }
+                  - cog       = {
+                      - maximum = 360
+                      - minimum = 0
+                      - type    = "number"
+                    }
+                  - conn      = {
+                      - type = "string"
+                    }
+                  - data      = {
+                      - type = "string"
+                    }
+                  - desc      = {
+                      - type = "string"
+                    }
+                  - event     = {
+                      - type = "string"
+                    }
+                  - lat       = {
+                      - maximum = 90
+                      - minimum = -90
+                      - type    = "number"
+                    }
+                  - lon       = {
+                      - maximum = 180
+                      - minimum = -180
+                      - type    = "number"
+                    }
+                  - request   = {}
+                  - steps     = {}
+                  - tid       = {
+                      - type = "string"
+                    }
+                  - tst       = {
+                      - type = "integer"
+                    }
+                  - vel       = {
+                      - minimum = 0
+                      - type    = "number"
+                    }
+                  - waypoints = {
+                      - type = "array"
+                    }
+                  - wtst      = {
+                      - type = "integer"
+                    }
+                }
+              - required             = [
+                  - "_type",
+                ]
+              - title                = "OwnTracks payload"
+              - type                 = "object"
+            }
+        ) -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.api_gateway.aws_api_gateway_request_validator.body_only will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_request_validator" "body_only" {
+      - id                          = "hz4j2s" -> null
+      - name                        = "validate-json-body" -> null
+      - rest_api_id                 = "pekpiisite" -> null
+      - validate_request_body       = true -> null
+      - validate_request_parameters = false -> null
+    }
+
+  # module.api_gateway.aws_api_gateway_resource.locations will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_resource" "locations" {
+      - id          = "ikeozh" -> null
+      - parent_id   = "8bhio7h965" -> null
+      - path        = "/locations" -> null
+      - path_part   = "locations" -> null
+      - rest_api_id = "pekpiisite" -> null
+    }
+
+  # module.api_gateway.aws_api_gateway_rest_api.this will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_rest_api" "this" {
+      - api_key_source               = "HEADER" -> null
+      - arn                          = "arn:aws:apigateway:eu-south-1::/restapis/pekpiisite" -> null
+      - binary_media_types           = [] -> null
+      - created_date                 = "2026-03-23T21:45:10Z" -> null
+      - disable_execute_api_endpoint = false -> null
+      - execution_arn                = "arn:aws:execute-api:eu-south-1:681108148089:pekpiisite" -> null
+      - id                           = "pekpiisite" -> null
+      - name                         = "locations-tracker-prod-api" -> null
+      - root_resource_id             = "8bhio7h965" -> null
+      - tags                         = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+      - tags_all                     = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - endpoint_configuration {
+          - ip_address_type  = "ipv4" -> null
+          - types            = [
+              - "EDGE",
+            ] -> null
+          - vpc_endpoint_ids = [] -> null
+        }
+    }
+
+  # module.api_gateway.aws_api_gateway_stage.this will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_api_gateway_stage" "this" {
+      - arn                   = "arn:aws:apigateway:eu-south-1::/restapis/pekpiisite/stages/v1" -> null
+      - cache_cluster_enabled = false -> null
+      - deployment_id         = "sf61w0" -> null
+      - execution_arn         = "arn:aws:execute-api:eu-south-1:681108148089:pekpiisite/v1" -> null
+      - id                    = "ags-pekpiisite-v1" -> null
+      - invoke_url            = "https://pekpiisite.execute-api.eu-south-1.amazonaws.com/v1" -> null
+      - rest_api_id           = "pekpiisite" -> null
+      - stage_name            = "v1" -> null
+      - tags                  = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+      - tags_all              = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+      - variables             = {} -> null
+      - xray_tracing_enabled  = false -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.api_gateway.aws_iam_role.apigw will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_iam_role" "apigw" {
+      - arn                   = "arn:aws:iam::681108148089:role/locations-tracker-prod-apigw-role" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "apigateway.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-03-23T21:45:10Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "locations-tracker-prod-apigw-role" -> null
+      - managed_policy_arns   = [] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "locations-tracker-prod-apigw-role" -> null
+      - path                  = "/" -> null
+      - tags                  = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+      - tags_all              = {
+          - "Environment" = "prod"
+          - "ManagedBy"   = "terraform"
+          - "Project"     = "locations-tracker"
+        } -> null
+      - unique_id             = "AROAZ5FJVR543YLQ5UMGX" -> null
+        # (3 unchanged attributes hidden)
+
+      - inline_policy {
+          - name   = "locations-tracker-prod-api-sqs-policy" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = "sqs:SendMessage"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:sqs:eu-south-1:681108148089:locations-tracker-prod-queue"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # module.api_gateway.aws_iam_role_policy.apigw_sqs will be destroyed
+  # (because module.api_gateway is not in configuration)
+  - resource "aws_iam_role_policy" "apigw_sqs" {
+      - id          = "locations-tracker-prod-apigw-role:locations-tracker-prod-api-sqs-policy" -> null
+      - name        = "locations-tracker-prod-api-sqs-policy" -> null
+      - policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "sqs:SendMessage"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:sqs:eu-south-1:681108148089:locations-tracker-prod-queue"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - role        = "locations-tracker-prod-apigw-role" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.api_gateway[0].aws_api_gateway_deployment.this will be created
+  + resource "aws_api_gateway_deployment" "this" {
+      + created_date  = (known after apply)
+      + execution_arn = (known after apply)
+      + id            = (known after apply)
+      + invoke_url    = (known after apply)
+      + rest_api_id   = (known after apply)
+      + triggers      = (known after apply)
+    }
+
+  # module.api_gateway[0].aws_api_gateway_integration.sqs will be created
+  + resource "aws_api_gateway_integration" "sqs" {
+      + cache_namespace         = (known after apply)
+      + connection_type         = "INTERNET"
+      + credentials             = (known after apply)
+      + http_method             = "POST"
+      + id                      = (known after apply)
+      + integration_http_method = "POST"
+      + passthrough_behavior    = (known after apply)
+      + request_parameters      = {
+          + "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
+        }
+      + request_templates       = {
+          + "application/json" = "Action=SendMessage&Version=2012-11-05&MessageBody=$util.urlEncode($input.body)"
+        }
+      + resource_id             = (known after apply)
+      + rest_api_id             = (known after apply)
+      + timeout_milliseconds    = 29000
+      + type                    = "AWS"
+      + uri                     = "arn:aws:apigateway:eu-south-1:sqs:path/681108148089/locations-tracker-prod-queue"
+    }
+
+  # module.api_gateway[0].aws_api_gateway_integration_response.post_200 will be created
+  + resource "aws_api_gateway_integration_response" "post_200" {
+      + http_method        = "POST"
+      + id                 = (known after apply)
+      + resource_id        = (known after apply)
+      + response_templates = {
+          + "application/json" = <<-EOT
+                #set($messageId = "")
+                #set($fromPath = $input.path('$.SendMessageResponse.SendMessageResult.MessageId'))
+                #if($fromPath != "" && $fromPath != "null")
+                  #set($messageId = $fromPath)
+                #else
+                  #set($raw = $input.body)
+                  #set($startTag = "<MessageId>")
+                  #set($endTag = "</MessageId>")
+                  #set($start = $raw.indexOf($startTag))
+                  #if($start != -1)
+                    #set($from = $start + $startTag.length())
+                    #set($end = $raw.indexOf($endTag, $from))
+                    #if($end != -1)
+                      #set($messageId = $raw.substring($from, $end))
+                    #end
+                  #end
+                #end
+                {
+                  "_type": "location_ack",
+                  "message_id": "$util.escapeJavaScript($messageId)"
+                }
+            EOT
+        }
+      + rest_api_id        = (known after apply)
+      + status_code        = "200"
+    }
+
+  # module.api_gateway[0].aws_api_gateway_method.post will be created
+  + resource "aws_api_gateway_method" "post" {
+      + api_key_required     = false
+      + authorization        = "NONE"
+      + http_method          = "POST"
+      + id                   = (known after apply)
+      + request_models       = {
+          + "application/json" = "OwnTracksPayload"
+        }
+      + request_validator_id = (known after apply)
+      + resource_id          = (known after apply)
+      + rest_api_id          = (known after apply)
+    }
+
+  # module.api_gateway[0].aws_api_gateway_method_response.post_200 will be created
+  + resource "aws_api_gateway_method_response" "post_200" {
+      + http_method = "POST"
+      + id          = (known after apply)
+      + resource_id = (known after apply)
+      + rest_api_id = (known after apply)
+      + status_code = "200"
+    }
+
+  # module.api_gateway[0].aws_api_gateway_model.location_payload will be created
+  + resource "aws_api_gateway_model" "location_payload" {
+      + content_type = "application/json"
+      + id           = (known after apply)
+      + name         = "OwnTracksPayload"
+      + rest_api_id  = (known after apply)
+      + schema       = jsonencode(
+            {
+              + "$schema"            = "http://json-schema.org/draft-04/schema#"
+              + additionalProperties = true
+              + oneOf                = [
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "location",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "lat",
+                          + "lon",
+                          + "tst",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "transition",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "tst",
+                          + "wtst",
+                          + "event",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "waypoint",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "desc",
+                          + "tst",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "waypoints",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "waypoints",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "cmd",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "action",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "encrypted",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "data",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "card",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "tid",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "lwt",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "tst",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "steps",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "tst",
+                          + "steps",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "request",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "request",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "status",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "configuration",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "beacon",
+                                ]
+                            }
+                        }
+                      + required             = [
+                          + "_type",
+                          + "tst",
+                        ]
+                      + type                 = "object"
+                    },
+                  + {
+                      + additionalProperties = true
+                      + properties           = {
+                          + _type = {
+                              + enum = [
+                                  + "activity",
+                                ]
+                            }
+                        }
+                      + type                 = "object"
+                    },
+                ]
+              + properties           = {
+                  + _id       = {
+                      + type = "string"
+                    }
+                  + _type     = {
+                      + enum = [
+                          + "beacon",
+                          + "card",
+                          + "cmd",
+                          + "configuration",
+                          + "encrypted",
+                          + "location",
+                          + "lwt",
+                          + "request",
+                          + "status",
+                          + "steps",
+                          + "transition",
+                          + "waypoint",
+                          + "waypoints",
+                          + "activity",
+                        ]
+                      + type = "string"
+                    }
+                  + act       = {
+                      + type = "integer"
+                    }
+                  + action    = {
+                      + type = "string"
+                    }
+                  + batt      = {
+                      + maximum = 100
+                      + minimum = 0
+                      + type    = "integer"
+                    }
+                  + cog       = {
+                      + maximum = 360
+                      + minimum = 0
+                      + type    = "number"
+                    }
+                  + conn      = {
+                      + type = "string"
+                    }
+                  + data      = {
+                      + type = "string"
+                    }
+                  + desc      = {
+                      + type = "string"
+                    }
+                  + event     = {
+                      + type = "string"
+                    }
+                  + lat       = {
+                      + maximum = 90
+                      + minimum = -90
+                      + type    = "number"
+                    }
+                  + lon       = {
+                      + maximum = 180
+                      + minimum = -180
+                      + type    = "number"
+                    }
+                  + request   = {}
+                  + steps     = {}
+                  + tid       = {
+                      + type = "string"
+                    }
+                  + tst       = {
+                      + type = "integer"
+                    }
+                  + vel       = {
+                      + minimum = 0
+                      + type    = "number"
+                    }
+                  + waypoints = {
+                      + type = "array"
+                    }
+                  + wtst      = {
+                      + type = "integer"
+                    }
+                }
+              + required             = [
+                  + "_type",
+                ]
+              + title                = "OwnTracks payload"
+              + type                 = "object"
+            }
+        )
+    }
+
+  # module.api_gateway[0].aws_api_gateway_request_validator.body_only will be created
+  + resource "aws_api_gateway_request_validator" "body_only" {
+      + id                          = (known after apply)
+      + name                        = "validate-json-body"
+      + rest_api_id                 = (known after apply)
+      + validate_request_body       = true
+      + validate_request_parameters = false
+    }
+
+  # module.api_gateway[0].aws_api_gateway_resource.locations will be created
+  + resource "aws_api_gateway_resource" "locations" {
+      + id          = (known after apply)
+      + parent_id   = (known after apply)
+      + path        = (known after apply)
+      + path_part   = "locations"
+      + rest_api_id = (known after apply)
+    }
+
+  # module.api_gateway[0].aws_api_gateway_rest_api.this will be created
+  + resource "aws_api_gateway_rest_api" "this" {
+      + api_key_source               = (known after apply)
+      + arn                          = (known after apply)
+      + binary_media_types           = (known after apply)
+      + created_date                 = (known after apply)
+      + description                  = (known after apply)
+      + disable_execute_api_endpoint = (known after apply)
+      + execution_arn                = (known after apply)
+      + id                           = (known after apply)
+      + minimum_compression_size     = (known after apply)
+      + name                         = "locations-tracker-prod-api"
+      + policy                       = (known after apply)
+      + root_resource_id             = (known after apply)
+      + tags                         = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + tags_all                     = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+
+      + endpoint_configuration (known after apply)
+    }
+
+  # module.api_gateway[0].aws_api_gateway_stage.this will be created
+  + resource "aws_api_gateway_stage" "this" {
+      + arn           = (known after apply)
+      + deployment_id = (known after apply)
+      + execution_arn = (known after apply)
+      + id            = (known after apply)
+      + invoke_url    = (known after apply)
+      + rest_api_id   = (known after apply)
+      + stage_name    = "v1"
+      + tags          = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + tags_all      = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + web_acl_arn   = (known after apply)
+    }
+
+  # module.api_gateway[0].aws_iam_role.apigw will be created
+  + resource "aws_iam_role" "apigw" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "apigateway.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "locations-tracker-prod-apigw-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + tags_all              = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.api_gateway[0].aws_iam_role_policy.apigw_sqs will be created
+  + resource "aws_iam_role_policy" "apigw_sqs" {
+      + id          = (known after apply)
+      + name        = "locations-tracker-prod-api-sqs-policy"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "sqs:SendMessage"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:sqs:eu-south-1:681108148089:locations-tracker-prod-queue"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+  # module.iot_core[0].aws_iam_role.iot_rule will be created
+  + resource "aws_iam_role" "iot_rule" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "iot.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "locations-tracker-prod-iot-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iot_core[0].aws_iam_role_policy.iot_to_sqs will be created
+  + resource "aws_iam_role_policy" "iot_to_sqs" {
+      + id          = (known after apply)
+      + name        = "locations-tracker-prod-iot-rule-sqs-send"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = "sqs:SendMessage"
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:sqs:eu-south-1:681108148089:locations-tracker-prod-queue"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+  # module.iot_core[0].aws_iot_policy.device will be created
+  + resource "aws_iot_policy" "device" {
+      + arn                = (known after apply)
+      + default_version_id = (known after apply)
+      + id                 = (known after apply)
+      + name               = "locations-tracker-prod-iot-policy"
+      + policy             = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "iot:Connect",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:iot:eu-south-1:681108148089:client/*",
+                        ]
+                      + Sid      = "Connect"
+                    },
+                  + {
+                      + Action   = [
+                          + "iot:Publish",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:iot:eu-south-1:681108148089:topic/owntracks/*",
+                        ]
+                      + Sid      = "PublishOwnTracks"
+                    },
+                  + {
+                      + Action   = [
+                          + "iot:Subscribe",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:iot:eu-south-1:681108148089:topicfilter/owntracks/*",
+                        ]
+                      + Sid      = "SubscribeOwnTracks"
+                    },
+                  + {
+                      + Action   = [
+                          + "iot:Receive",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:iot:eu-south-1:681108148089:topic/owntracks/*",
+                        ]
+                      + Sid      = "ReceiveOwnTracks"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + tags_all           = {
+          + "Environment" = "prod"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "locations-tracker"
+        }
+    }
+
+  # module.lambda.aws_lambda_function.this will be updated in-place
+  ~ resource "aws_lambda_function" "this" {
+        id                             = "locations-tracker-prod-processor"
+      ~ last_modified                  = "2026-03-30T22:55:29.000+0000" -> (known after apply)
+      ~ source_code_hash               = "s5Aryvy0s4zHFZl18R9BT207AGCHD+8vlTnnFk/yrxw=" -> "+Cr6zAvJXJpN/VIZfrxqyC4IHtR4wgQtyFGk4BeoZAI="
+        tags                           = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+            "Project"     = "locations-tracker"
+        }
+        # (27 unchanged attributes hidden)
+
+        # (4 unchanged blocks hidden)
+    }
+
+Plan: 15 to add, 1 to change, 12 to destroy.
+
+Changes to Outputs:
+  ~ api_gateway_invoke_url              = "https://pekpiisite.execute-api.eu-south-1.amazonaws.com/v1" -> (known after apply)
+  + iot_device_policy_name              = "locations-tracker-prod-iot-policy"
+  + iot_manual_certificate_instructions = <<-EOT
+        In AWS IoT Core console (eu-south-1):
+        1. Go to Security > Certificates and choose Create certificate.
+        2. Activate the certificate and download certificate PEM, private key, and Amazon Root CA.
+        3. Attach policy 'locations-tracker-prod-iot-policy' to the certificate.
+        4. Configure your client with MQTT over TLS (port 8883), topic 'owntracks/#' (example: owntracks/<user>/<device>), and these required permissions:
+           - iot:Connect
+           - iot:Publish
+           - iot:Subscribe
+           - iot:Receive
+    EOT
+  + sqs_queue_url                       = "https://sqs.eu-south-1.amazonaws.com/681108148089/locations-tracker-prod-queue"
+
+Warning: Check block assertion failed
+
+  on validation.tf line 3, in check "iot_core_region_supported":
+   3:     condition     = !var.enable_iot_core || !contains(var.iot_core_unsupported_regions, local.iot_effective_region)
+    ├────────────────
+    │ local.iot_effective_region is "eu-south-1"
+    │ var.enable_iot_core is true
+    │ var.iot_core_unsupported_regions is set of string with 1 element
+
+AWS IoT Core is configured in 'eu-south-1', which is in iot_core_unsupported_regions. Choose a fallback by setting
+iot_core_region to a supported region (example: eu-west-1).
