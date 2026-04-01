@@ -40,3 +40,5 @@ backend.tf
 terraform.rc
 
 *.zip
+certs/
+.codex
