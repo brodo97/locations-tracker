@@ -40,3 +40,15 @@ backend.tf
 terraform.rc
 
 *.zip
+
+# Ignore certificates folder which may contain private keys and other sensitive data
+certs/
+
+# Not relevant to this project
+.codex
+
+# Ignore Python specific cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
