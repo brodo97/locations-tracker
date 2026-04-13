@@ -15,6 +15,12 @@ variable "activity_project_name" {
   default     = "activities-tracker"
 }
 
+variable "enable_activity_ingestion" {
+  description = "Enable custom Activities ingestion (_type = activity) with dedicated S3 bucket and Lambda/API handling."
+  type        = bool
+  default     = false
+}
+
 variable "environment" {
   description = "Deployment environment (e.g., dev, prod)."
   type        = string
