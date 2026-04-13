@@ -36,7 +36,9 @@ SELECT * FROM 'owntracks/#'
 ```
 
 4. Both ingestion methods forward data into the same SQS queue.
-5. Lambda reads messages from SQS, keeps only events with `_type = "location"`, and writes them to S3.
+5. Lambda reads messages from SQS:
+   - always keeps `_type = "location"` and writes to the locations bucket
+   - optionally keeps `_type = "activity"` and writes to the activities bucket when `enable_activity_ingestion = true`
 6. Files are stored in JSON Lines format using:
 
 ```text
@@ -103,6 +105,8 @@ Ingestion toggles and IoT options:
 
 - `enable_api_gateway` (default `true`)
 - `enable_iot_core` (default `false`)
+- `enable_activity_ingestion` (default `false`)
+- `activity_project_name` (bucket prefix used only when `enable_activity_ingestion = true`)
 - `iot_core_region` (default `null` => uses `aws_region`)
 - `iot_create_certificate` (default `false`)
 - `iot_topic_filter` (default `owntracks/#`)
@@ -132,6 +136,13 @@ enable_api_gateway    = true
 enable_iot_core       = true
 iot_core_region       = "eu-west-1"
 iot_create_certificate = false
+```
+
+Enable custom Activities extension:
+
+```hcl
+enable_activity_ingestion = true
+activity_project_name     = "activities-tracker"
 ```
 
 ### 3) IoT Region Fallback
@@ -170,9 +181,11 @@ Useful outputs:
 - `api_gateway_invoke_url` (null when HTTP ingestion is disabled)
 - `sqs_queue_url`
 - `iot_endpoint` (null when IoT ingestion is disabled)
+- `iot_thing_name` (null when IoT ingestion is disabled)
 - `owntracks_mqtt_connection` (null when IoT ingestion is disabled)
 - `iot_manual_certificate_instructions` (only when IoT is enabled and auto cert is disabled)
 - `data_lake_bucket`
+- `activity_data_lake_bucket` (null when activities ingestion is disabled)
 - `data_lake_prefix`
 - `aws_region`
 
@@ -224,14 +237,20 @@ OwnTracks MQTT requirements:
 Certificate options:
 
 1. `iot_create_certificate = true`:
-- Terraform creates certificate and policy attachment.
+- Terraform creates certificate, IoT Thing, policy attachment, and Thing attachment.
 - Retrieve values from outputs (`iot_certificate_pem`, `iot_certificate_private_key`, `iot_certificate_public_key`).
 
 2. `iot_create_certificate = false`:
-- Terraform creates only IoT policy.
+- Terraform creates IoT policy and IoT Thing.
 - Follow output `iot_manual_certificate_instructions` to create/import certificate in AWS console and attach policy.
 
 When `iot_create_certificate = true`, certificate material is stored in Terraform state. Use an encrypted remote backend and restrict state access.
+
+Export files and generate `owntracks.p12`:
+
+```bash
+./core/scripts/export_owntracks_cert.sh
+```
 
 ## Querying Data with Athena
 
@@ -252,10 +271,13 @@ LIMIT 100;
 ### Core
 
 - SQS queue (shared by HTTP and MQTT ingestion)
+- Primary S3 bucket for location events
+- Optional S3 bucket for activity events (when enabled)
 - Optional API Gateway REST API with `POST /locations` endpoint
 - Optional IoT Core topic rule (`owntracks/#` -> SQS)
 - IAM role/policy for IoT Core to send messages to SQS
-- Optional IoT certificate and policy attachment
+- IoT Thing for OwnTracks device registration
+- Optional IoT certificate with policy and thing attachment
 - Python 3.13 Lambda function with SQS trigger
 - Versioned S3 bucket with server-side encryption (AES256)
 
@@ -267,6 +289,6 @@ LIMIT 100;
 
 ## Operational Notes
 
-- Lambda behavior is unchanged and still stores only payloads where `_type = "location"`.
-- Data files are appended to `locations.jsonl` for each UTC day.
+- Lambda always stores payloads where `_type = "location"` in `locations.jsonl` per UTC day.
+- If `enable_activity_ingestion = true`, Lambda also stores `_type = "activity"` in `activities.jsonl` per UTC day.
 - Naming and tagging are driven by `project_name`, `environment`, and `additional_tags`.

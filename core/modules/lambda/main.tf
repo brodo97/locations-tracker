@@ -16,6 +16,18 @@ variable "bucket_name" {
 variable "activity_bucket_name" {
   description = "Target S3 bucket name for activity data."
   type        = string
+  default     = null
+}
+
+variable "enable_activity_ingestion" {
+  description = "Enable processing of custom _type = activity payloads."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.enable_activity_ingestion || var.activity_bucket_name != null
+    error_message = "activity_bucket_name must be provided when enable_activity_ingestion is true."
+  }
 }
 
 variable "queue_arn" {
@@ -116,12 +128,16 @@ data "aws_iam_policy_document" "lambda_policy" {
       "s3:PutObject",
       "s3:ListBucket"
     ]
-    resources = [
-      "arn:aws:s3:::${var.bucket_name}",
-      "arn:aws:s3:::${var.bucket_name}/*",
-      "arn:aws:s3:::${var.activity_bucket_name}",
-      "arn:aws:s3:::${var.activity_bucket_name}/*"
-    ]
+    resources = concat(
+      [
+        "arn:aws:s3:::${var.bucket_name}",
+        "arn:aws:s3:::${var.bucket_name}/*"
+      ],
+      var.enable_activity_ingestion ? [
+        "arn:aws:s3:::${var.activity_bucket_name}",
+        "arn:aws:s3:::${var.activity_bucket_name}/*"
+      ] : []
+    )
   }
 }
 
@@ -152,10 +168,14 @@ resource "aws_lambda_function" "this" {
   reserved_concurrent_executions = var.reserved_concurrent_executions != null ? var.reserved_concurrent_executions : null
 
   environment {
-    variables = {
-      LOCATION_BUCKET = var.bucket_name
-      ACTIVITY_BUCKET = var.activity_bucket_name
-    }
+    variables = merge(
+      {
+        LOCATION_BUCKET = var.bucket_name
+      },
+      var.enable_activity_ingestion ? {
+        ACTIVITY_BUCKET = var.activity_bucket_name
+      } : {}
+    )
   }
 
   tags = var.tags

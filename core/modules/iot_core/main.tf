@@ -21,6 +21,11 @@ variable "device_policy_name" {
   type        = string
 }
 
+variable "thing_name" {
+  description = "IoT Thing name used for OwnTracks device registration."
+  type        = string
+}
+
 variable "topic_filter" {
   description = "MQTT topic filter for OwnTracks payloads."
   type        = string
@@ -138,6 +143,10 @@ resource "aws_iot_policy" "device" {
   })
 }
 
+resource "aws_iot_thing" "device" {
+  name = var.thing_name
+}
+
 resource "aws_iot_certificate" "device" {
   count  = var.create_certificate ? 1 : 0
   active = true
@@ -147,6 +156,13 @@ resource "aws_iot_policy_attachment" "device" {
   count  = var.create_certificate ? 1 : 0
   policy = aws_iot_policy.device.name
   target = aws_iot_certificate.device[0].arn
+}
+
+resource "aws_iot_thing_principal_attachment" "device" {
+  count = var.create_certificate ? 1 : 0
+
+  principal = aws_iot_certificate.device[0].arn
+  thing     = aws_iot_thing.device.name
 }
 
 data "aws_iot_endpoint" "this" {
@@ -166,6 +182,11 @@ output "topic_rule_name" {
 output "device_policy_name" {
   description = "IoT policy name for device MQTT permissions."
   value       = aws_iot_policy.device.name
+}
+
+output "thing_name" {
+  description = "IoT Thing name for OwnTracks device registration."
+  value       = aws_iot_thing.device.name
 }
 
 output "certificate_arn" {
@@ -197,7 +218,8 @@ In AWS IoT Core console (${data.aws_region.current.name}):
 1. Go to Security > Certificates and choose Create certificate.
 2. Activate the certificate and download certificate PEM, private key, and Amazon Root CA.
 3. Attach policy '${aws_iot_policy.device.name}' to the certificate.
-4. Configure your client with MQTT over TLS (port 8883), topic '${var.topic_filter}' (example: owntracks/<user>/<device>), and these required permissions:
+4. Attach the certificate to Thing '${aws_iot_thing.device.name}'.
+5. Configure your client with MQTT over TLS (port 8883), topic '${var.topic_filter}' (example: owntracks/<user>/<device>), and these required permissions:
    - iot:Connect
    - iot:Publish
    - iot:Subscribe

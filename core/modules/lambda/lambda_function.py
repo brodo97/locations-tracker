@@ -9,7 +9,10 @@ s3 = boto3.client("s3")
 LOCATION_BUCKET = os.environ.get("LOCATION_BUCKET")
 ACTIVITY_BUCKET = os.environ.get("ACTIVITY_BUCKET")
 
-SUPPORTED_TYPES = {"location", "activity"}
+SUPPORTED_TYPES = {"location"}
+if ACTIVITY_BUCKET:
+    SUPPORTED_TYPES.add("activity")
+
 FILENAME_BY_TYPE = {
     "location": "locations.jsonl",
     "activity": "activities.jsonl"

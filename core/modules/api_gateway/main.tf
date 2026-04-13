@@ -30,6 +30,12 @@ variable "enable_logging" {
   default     = false
 }
 
+variable "enable_activity_ingestion" {
+  description = "Allow custom _type = activity payloads in API Gateway model validation."
+  type        = bool
+  default     = false
+}
+
 locals {
   # API path for ingesting location payloads
   resource_path         = "locations"
@@ -57,6 +63,24 @@ locals {
   "message_id": "$util.escapeJavaScript($messageId)"
 }
 EOF
+  owntracks_allowed_types = concat(
+    [
+      "beacon",
+      "card",
+      "cmd",
+      "configuration",
+      "encrypted",
+      "location",
+      "lwt",
+      "request",
+      "status",
+      "steps",
+      "transition",
+      "waypoint",
+      "waypoints"
+    ],
+    var.enable_activity_ingestion ? ["activity"] : []
+  )
 }
 
 data "aws_iam_policy_document" "apigw_assume" {
@@ -112,27 +136,12 @@ resource "aws_api_gateway_model" "location_payload" {
     properties = {
       "_type" = {
         type = "string"
-        enum = [
-          "beacon",
-          "card",
-          "cmd",
-          "configuration",
-          "encrypted",
-          "location",
-          "lwt",
-          "request",
-          "status",
-          "steps",
-          "transition",
-          "waypoint",
-          "waypoints",
-          "activity"
-        ]
+        enum = local.owntracks_allowed_types
       }
       "lat"       = { type = "number", minimum = -90, maximum = 90 }
       "lon"       = { type = "number", minimum = -180, maximum = 180 }
       "tst"       = { type = "integer" }
-      "act"       = { type = "integer" }
+      "act"       = { type = "integer" }  # Optional activity type when _type=activity
       "wtst"      = { type = "integer" }
       "event"     = { type = "string" }
       "desc"      = { type = "string" }
@@ -259,6 +268,7 @@ resource "aws_api_gateway_model" "location_payload" {
         properties = {
           "_type" = { enum = ["activity"] }
         }
+        required             = ["_type", "tst", "act"]
         additionalProperties = true
       }
     ]
@@ -411,7 +421,7 @@ resource "aws_api_gateway_stage" "this" {
     }
   }
 
-  tags = var.tags
+  tags       = var.tags
   depends_on = [aws_api_gateway_account.this]
 }
 
